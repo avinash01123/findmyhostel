@@ -7,17 +7,19 @@ import connectDB from "./db/connectDB.js";
 
 import cookieParser from "cookie-parser";
 import path from "path";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 dotenv.config();
 connectDB();
-const __dirname = path.resolve();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 8000;
 
 app.use(express.json());
 
 app.use(cookieParser());
-app.listen(5000, () => {
+app.listen(PORT, () => {
   console.log(`server start at http://localhost:${PORT}`);
 });
 
@@ -27,7 +29,7 @@ app.use("/api/listing", listingRouter);
 
 app.use(express.static(path.join(__dirname, "/client/dist")));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "/client/dist/index.html"));
 });
 
 app.use((err, req, res, next) => {
